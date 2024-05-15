@@ -44,7 +44,7 @@ public class UserServiceImplement implements UserService {
     public User update(String username, User user) {
         Optional<User> existUser = userRepository.findUserByUsername(username);
 
-        if (!existUser.isPresent()) {
+        if (existUser.isEmpty()) {
             throw new RuntimeException("Did not find user with username - " + username);
         }
 
