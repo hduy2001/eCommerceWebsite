@@ -5,7 +5,6 @@ import com.duy.assignment.eCommerceWebsitereview.repository.UserRepository;
 import com.duy.assignment.eCommerceWebsitereview.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,13 +36,30 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    @Transactional
     public User save(User user) {
         return userRepository.save(user);
     }
 
     @Override
-    @Transactional
+    public User update(String username, User user) {
+        Optional<User> existUser = userRepository.findUserByUsername(username);
+
+        if (!existUser.isPresent()) {
+            throw new RuntimeException("Did not find user with username - " + username);
+        }
+
+        existUser.get().setUsername(user.getUsername());
+        existUser.get().setEmail(user.getEmail());
+        existUser.get().setPassword(user.getPassword());
+        existUser.get().setFullName(user.getFullName());
+        existUser.get().setPhoneNumber(user.getPhoneNumber());
+        existUser.get().setRole(user.getRole());
+        existUser.get().setEnabled(user.isEnabled());
+        return userRepository.save(existUser.get());
+    }
+
+
+    @Override
     public void deleteByUsername(String username) {
         userRepository.deleteUserByUsername(username);
     }
