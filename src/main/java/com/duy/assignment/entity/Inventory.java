@@ -4,25 +4,23 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
-@Table(name = "categories")
+@Table(name = "inventory")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(builderClassName = "Builder", toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Category extends AuditEntity {
+public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    int categoryId;
+    @Column(name = "inventory_id")
+    int inventoryId;
 
-    @Column(name = "category_name", length = 50)
-    String categoryName;
+    @Column(name = "in_stock")
+    int inStock;
 
-    @ManyToMany(mappedBy = "categories")
-    private Set<Product> products = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    Product product;
 }
