@@ -7,6 +7,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {BrandMapper.class, CategoryIdMapper.class})
 public interface ProductMapper {
@@ -18,7 +19,12 @@ public interface ProductMapper {
     @Mapping(source = "categoryIds", target = "categories")
     Product toEntity(ProductDTO dto);
 
-    List<ProductDTO> toDTOs(List<Product> products);
+//    List<ProductDTO> toDTOs(List<Product> products);
 
+    default List<ProductDTO> toDTOs(List<Product> products) {
+        return products.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
     List<Product> toEntities(List<ProductDTO> productDTOS);
 }

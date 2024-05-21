@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/admin")
-public class AdminController {
+@RequestMapping("/api/v1/")
+public class CategoryController {
     private final CategoryService categoryService;
     private final ProductService productService;
 
     @Autowired
-    public AdminController(CategoryService categoryService, ProductService productService) {
+    public CategoryController(CategoryService categoryService, ProductService productService) {
         this.categoryService = categoryService;
         this.productService = productService;
     }
@@ -27,8 +27,4 @@ public class AdminController {
         return categoryService.add(categoryDTO);
     }
 
-    @PostMapping("/products")
-    public ProductDTO addProduct(@RequestBody ProductDTO productDTO) {
-        return productService.add(productDTO);
-    }
 }
